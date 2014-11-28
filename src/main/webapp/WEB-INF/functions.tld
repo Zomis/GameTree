@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+    <tlib-version>1.0</tlib-version>
+    <short-name>mytlds</short-name>
+    <uri>http://www.zomis.net/tld</uri>
+<!--    <function>
+        <name>url</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String url(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>startTime</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String startTime()</function-signature>
+    </function>
+    <function>
+        <name>serverTime</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String serverTime()</function-signature>
+    </function>
+    <function>
+        <name>qurl</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String qurl(net.zomis.mfestats.db.StatsQuery)</function-signature>
+    </function>    
+    <function>
+        <name>aurl</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String aurl(net.zomis.mfestats.db.StatsQuery)</function-signature>
+    </function>
+    <function>
+        <name>analyzeAI</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String analyzeAI()</function-signature>
+    </function>    
+    <function>
+        <name>serverPath</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>java.lang.String serverPath(javax.servlet.http.HttpServletRequest)</function-signature>
+    </function>    
+    <function>
+        <name>utils</name>
+        <function-class>net.zomis.mfestats.utils.MyJSTL</function-class>
+        <function-signature>net.zomis.mfestats.utils.ViewUtils utils()</function-signature>
+    </function> -->    
+</taglib>
