@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,14 @@ public class HomeController {
 	public String home(Locale locale, Model model, HttpServletRequest request) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
+		return "home";
+	}
+
+	@RequestMapping(value = "/db", method = RequestMethod.GET)
+	public String db(Locale locale, Model model, HttpServletRequest request) {
+		Session sess = sessionFactory.openSession();
+		logger.info("Session is " + sess);
+		sess.close();
 		return "home";
 	}
 
