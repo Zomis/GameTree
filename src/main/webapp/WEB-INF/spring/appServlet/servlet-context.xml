@@ -67,7 +67,9 @@
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<beans:property name="annotatedClasses">
 			<beans:list>
-			<!-- 	<beans:value>net.zomis.mfestats.TestEntity</beans:value> -->
+				<beans:value>net.zomis.gametree.model.GameTree</beans:value>
+				<beans:value>net.zomis.gametree.model.GameNode</beans:value>
+				<beans:value>net.zomis.gametree.model.TreeUser</beans:value>
 			</beans:list>
 		</beans:property>
 		<beans:property name="dataSource" ref="c3p0dataSource" />
@@ -75,10 +77,7 @@
 			<beans:props>
 				<beans:prop key="hibernate.dialect">${jdbc.dialect}</beans:prop>
 				<beans:prop key="hibernate.show_sql">true</beans:prop>
-				<beans:prop key="hibernate.hbm2ddl.auto">validate</beans:prop>
-				
-				
-				
+				<beans:prop key="hibernate.hbm2ddl.auto">update</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>
