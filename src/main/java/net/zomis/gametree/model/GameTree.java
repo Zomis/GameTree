@@ -46,4 +46,8 @@ public class GameTree {
 		return gameid;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }
