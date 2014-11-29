@@ -30,22 +30,17 @@ jsPlumb.ready(function() {
 		var windows = jsPlumb.getSelector(".chart-demo .window");
 		for (var i = 0; i < windows.length; i++) {
 			instance.addEndpoint(windows[i], {
-				uuid:windows[i].getAttribute("id") + "-bottom",
-				anchor:"Bottom",
-				maxConnections:-1
-			});
-			instance.addEndpoint(windows[i], {
-				uuid:windows[i].getAttribute("id") + "-top",
-				anchor:"Top",
+				uuid:windows[i].getAttribute("id") + "e",
+				anchor:"Center",
 				maxConnections:-1
 			});
 		}
 	
-		instance.connect({uuids:["chartWindow3-bottom", "chartWindow6-top" ], overlays:overlays, detachable:true, reattach:true});
-		instance.connect({uuids:["chartWindow1-bottom", "chartWindow2-top" ], overlays:overlays});
-		instance.connect({uuids:["chartWindow1-bottom", "chartWindow3-top" ], overlays:overlays});
-		instance.connect({uuids:["chartWindow2-bottom", "chartWindow4-top" ], overlays:overlays});
-		instance.connect({uuids:["chartWindow2-bottom", "chartWindow5-top" ], overlays:overlays});
+		instance.connect({uuids:["chartWindow3e", "chartWindow6e" ], overlays:overlays, detachable:true, reattach:true});
+		instance.connect({uuids:["chartWindow1e", "chartWindow2e" ], overlays:overlays});
+		instance.connect({uuids:["chartWindow1e", "chartWindow3e" ], overlays:overlays});
+		instance.connect({uuids:["chartWindow2e", "chartWindow4e" ], overlays:overlays});
+		instance.connect({uuids:["chartWindow2e", "chartWindow5e" ], overlays:overlays});
 				
 		instance.draggable(windows);		
 	});
