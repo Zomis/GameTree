@@ -46,3 +46,15 @@ jsPlumb.ready(function() {
 
 	jsPlumb.fire("jsPlumbDemoLoaded", instance);
 });
+	$(".window" ).click(function() {
+		$("#node-details" ).dialog({
+			title: $(this).html(),
+			buttons: {
+				Ok: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$("#node-description").html($(this).html());
+	});
+
