@@ -5,7 +5,7 @@ jsPlumb.ready(function() {
 	var instance = jsPlumb.getInstance({
 		// notice the 'curviness' argument to this Bezier curve.  the curves on this page are far smoother
 		// than the curves on the first demo, which use the default curviness value.			
-		Connector : [ "Bezier", { curviness:50 } ],
+		Connector : [ "Straight", {  } ],
 		DragOptions : { cursor: "pointer", zIndex:2000 },
 		PaintStyle : { strokeStyle:color, lineWidth:2 },
 		EndpointStyle : { radius:9, fillStyle:color },
