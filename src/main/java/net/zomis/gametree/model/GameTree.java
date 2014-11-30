@@ -1,8 +1,10 @@
 package net.zomis.gametree.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,8 +37,8 @@ public class GameTree {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date time;
 	
-	@OneToMany(targetEntity = GameNode.class)
-	private List<GameNode> nodes;
+	@OneToMany(targetEntity = GameNode.class, cascade = { CascadeType.ALL }, mappedBy = "tree")
+	private List<GameNode> nodes = new ArrayList<GameNode>();
 	
 	public String getName() {
 		return name;
@@ -48,6 +50,10 @@ public class GameTree {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void addNode(GameNode node) {
+		nodes.add(node);
 	}
 	
 }

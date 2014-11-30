@@ -1,10 +1,13 @@
 package net.zomis.gametree;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.zomis.gametree.model.GameNode;
 import net.zomis.gametree.model.GameTree;
+import net.zomis.gametree.model.NodeTag;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,6 +55,67 @@ public class HomeController {
 		session.getTransaction().commit();
 		session.close();
 		return "created";
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String add(@RequestParam("tree") Integer treeId, Model model, HttpServletRequest request) {
+		logger.info("Create new node!");
+		model.addAttribute("node", new GameNodeForm());
+		model.addAttribute("treeId", treeId);
+		return "add";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String addApply(@ModelAttribute("node") GameNodeForm nodeData, Model model) {
+		logger.info("Created new node! " + nodeData + " with name " + nodeData.getName());
+		Session session = sessionFactory.openSession();
+		GameTree tree = (GameTree) session.get(GameTree.class, nodeData.getTree());
+		GameNode node = new GameNode();
+		node.setTree(tree);
+		
+		node.setName(nodeData.getName());
+		for (String parentId : nodeData.getParents().split(" ")) {
+			try {
+				GameNode parentNode = (GameNode) session.get(GameNode.class, Integer.parseInt(parentId));
+				if (parentNode != null) {
+					node.addParent(parentNode);
+				}
+			}
+			catch (NumberFormatException ex) {
+			}
+		}
+		
+		for (String tagId : nodeData.getTags().split(" ")) {
+			if (tagId.isEmpty()) {
+				continue;
+			}
+			
+			@SuppressWarnings("unchecked")
+			List<NodeTag> nodeTag = session.createQuery("select nodeTag from NodeTag as nodeTag where nodeTag.name = :tag")
+				.setString("tag", tagId)
+				.list();
+			NodeTag tag;
+			if (nodeTag.isEmpty()) {
+				session.beginTransaction();
+				tag = new NodeTag();
+				tag.setName(tagId);
+				session.persist(tag);
+				session.getTransaction().commit();
+			}
+			else {
+				tag = nodeTag.iterator().next();
+			}
+			
+			node.addTag(tag);
+		}
+		
+		model.addAttribute("node", node);
+		session.beginTransaction();
+		tree.addNode(node);
+		session.update(tree);
+		session.getTransaction().commit();
+		session.close();
+		return "added";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
