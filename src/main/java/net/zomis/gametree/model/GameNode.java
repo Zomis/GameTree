@@ -2,6 +2,7 @@ package net.zomis.gametree.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,6 +60,10 @@ public class GameNode {
 
 	public List<GameNode> getParents() {
 		return this.parents;
+	}
+	
+	public String tagNames() {
+		return this.tags.stream().map(e -> e.getName()).collect(Collectors.joining());
 	}
 	
 }

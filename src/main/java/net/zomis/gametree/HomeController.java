@@ -129,7 +129,9 @@ public class HomeController {
 		logger.info("View!", locale);
 		Session session = sessionFactory.openSession();
 		GameTree tree = (GameTree) session.get(GameTree.class, id);
-		tree.getNodes().size(); // fetch items
+		for (GameNode node : tree.getNodes()) {
+			node.tagNames(); // fetch node tags
+		}
 		model.addAttribute("nodes", tree.getNodes());
 		model.addAttribute("nodePositions", tree.findPositions());
 		model.addAttribute("connections", tree.findConnections());

@@ -29,15 +29,26 @@
 	</style>
 </head>
 <body role="document">
+	<div class="container theme-home" role="main">
+	
+	</div>
+
+
 	<div id="main">
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
 			<c:forEach items="${nodes}" var="node">
-				<div class="window" id="chartWindow${node.getId()}">${node}</div>
+				<div class="window" data-tags="${node.tagNames()}" id="chartWindow${node.getId()}">${node}</div>
 			</c:forEach>
         </div>
         <!-- /demo -->
 	</div>
+	
+	<div id="node-details" style="display: none;">
+		<p id="node-description">Details</p>
+		<div id="node-tags"></div>
+	</div>
+	
 
 	<script>
 	jsPlumb.ready(function() {			
@@ -85,9 +96,23 @@
 
 		jsPlumb.fire("jsPlumbDemoLoaded", instance);
 	});
+	$(".window" ).click(function() {
+		$("#node-details").dialog({
+			title: $(this).html(),
+			buttons: {
+				Ok: function() {
+					$(this).dialog( "close" );
+				}
+			}
+		});
+		$("#node-description").html($(this).html());
+		var tags = $(this).data('tags').split(" ");
+		var tagHtml = "";
+		for (var i = 0; i < tags.length; i++) {
+			tagHtml += "<span class=\"node-tag\">" + tags[i] + "</span>";
+		}
+		$("#node-tags").html(tagHtml);
+	});
 	</script>
-Tree name is ${tree.name}<br />
-Tree id is ${tree.id}<br />
-${tree}
 </body>
 </html>
