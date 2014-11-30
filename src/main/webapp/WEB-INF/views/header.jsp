@@ -10,16 +10,14 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<link rel="stylesheet" href="<c:url value="/resources/css/server.css" />" type="text/css" media="all" />
 	<link rel="stylesheet" href="<c:url value="/resources/css/blue/style.css" />" type="text/css" media="all" />
+	<link rel="stylesheet" href="<c:url value="/resources/css/jquery-ui-1.9.2.custom.min.css" />" type="text/css" media="all" />
 	
-	<!-- Bootstrap -->
     <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet" />
  	<link href="<c:url value="/resources/css/bootstrap-theme.min.css" />" rel="stylesheet" />
 	<link href="<c:url value="/resources/css/theme.css" />" rel="stylesheet" />
 	<link href="<c:url value="/resources/css/jsplumb.css" />" rel="stylesheet" />
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
  
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
