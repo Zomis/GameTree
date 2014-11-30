@@ -7,4 +7,8 @@
 <title><fmt:message key="home.title" /></title>
 </head>
 <body role="document">
-<h1>Game Tree</h1>
+<%@ include file="navbar.jsp" %>
+<div class="container theme-home" role="main">
+	<h1>Game Tree</h1>
+</div>
+

@@ -29,6 +29,8 @@
 	</style>
 </head>
 <body role="document">
+<%@ include file="navbar.jsp" %>
+
 	<div class="container theme-home" role="main">
 	
 	</div>

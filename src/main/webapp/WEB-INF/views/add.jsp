@@ -6,6 +6,8 @@
 <title><fmt:message key="add.title" /></title>
 </head>
 <body role="document">
+<%@ include file="navbar.jsp" %>
+
 	<c:if test="${justAdded}">
 		Node added: <c:out value="${nodeAdded}"></c:out>
 	</c:if>
