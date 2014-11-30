@@ -56,4 +56,8 @@ public class GameTree {
 		nodes.add(node);
 	}
 	
+	public List<GameNode> getNodes() {
+		return nodes;
+	}
+	
 }

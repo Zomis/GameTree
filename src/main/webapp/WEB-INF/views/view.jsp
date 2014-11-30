@@ -34,12 +34,9 @@
 	<div id="main">
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
-			<div class="window" id="chartWindow1">window one</div>
-            <div class="window" id="chartWindow2">window two</div>
-            <div class="window" id="chartWindow3">window three</div>
-            <div class="window" id="chartWindow4">window four</div>
-            <div class="window" id="chartWindow5">window five</div>
-            <div class="window" id="chartWindow6">window six</div>
+			<c:forEach items="${nodes}" var="node" varStatus="itstatus">
+				<div class="window" id="chartWindow${itstatus.index}">${node}</div>
+			</c:forEach>
         </div>
         <!-- /demo -->
 	</div>
