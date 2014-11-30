@@ -18,30 +18,33 @@ jsPlumb.ready(function() {
 		
 	// suspend drawing and initialise.
 	instance.doWhileSuspended(function() {		
-		// declare some common values:
-		var arrowCommon = { foldback:0.7, fillStyle:color, width:14 },
-			// use three-arg spec to create two different arrows with the common values:
-			overlays = [
-				[ "Arrow", { location:0.7 }, arrowCommon ]
-			];
-
 		// add endpoints, giving them a UUID.
 		// you DO NOT NEED to use this method. You can use your library's selector method.
 		// the jsPlumb demos use it so that the code can be shared between all three libraries.
 		var windows = jsPlumb.getSelector(".chart-demo .window");
 		for (var i = 0; i < windows.length; i++) {
 			instance.addEndpoint(windows[i], {
+				isTarget: true,
 				uuid:windows[i].getAttribute("id") + "e",
-				anchor:"Center",
+				anchor:"Top",
+				maxConnections:-1
+			});
+			instance.addEndpoint(windows[i], {
+				isSource: true,
+				uuid:windows[i].getAttribute("id") + "s",
+				anchor:"Bottom",
 				maxConnections:-1
 			});
 		}
 	
-		instance.connect({uuids:["chartWindow3e", "chartWindow6e" ], overlays:overlays, detachable:true, reattach:true});
-		instance.connect({uuids:["chartWindow1e", "chartWindow2e" ], overlays:overlays});
-		instance.connect({uuids:["chartWindow1e", "chartWindow3e" ], overlays:overlays});
-		instance.connect({uuids:["chartWindow2e", "chartWindow4e" ], overlays:overlays});
-		instance.connect({uuids:["chartWindow2e", "chartWindow5e" ], overlays:overlays});
+		instance.connect({uuids:["chartWindow3s", "chartWindow6e" ], detachable:true, reattach:true})
+			.bind("click", function(conn) {
+				instance.detach(conn);
+			});
+		instance.connect({uuids:["chartWindow1s", "chartWindow2e" ]});
+		instance.connect({uuids:["chartWindow1s", "chartWindow3e" ]});
+		instance.connect({uuids:["chartWindow2s", "chartWindow4e" ]});
+		instance.connect({uuids:["chartWindow2s", "chartWindow5e" ]});
 				
 		instance.draggable(windows);		
 	});
