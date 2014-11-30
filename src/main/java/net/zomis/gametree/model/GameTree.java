@@ -2,7 +2,12 @@ package net.zomis.gametree.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -68,6 +73,42 @@ public class GameTree {
 			}
 		}
 		return result;
+	}
+	
+	public List<NodePosition> findPositions() {
+		List<NodePosition> result = new ArrayList<>();
+		
+		Map<GameNode, Integer> depths = new HashMap<GameNode, Integer>();
+		for (GameNode node : nodes) {
+			depths.put(node, findDepth(node, depths));
+		}
+		
+		Map<Integer, List<GameNode>> groupedByDepth = depths.keySet().stream().collect(Collectors.groupingBy(node -> depths.get(node)));
+		
+		for (Entry<Integer, List<GameNode>> ee : groupedByDepth.entrySet()) {
+			ListIterator<GameNode> it = ee.getValue().listIterator();
+			while (it.hasNext()) {
+				int index = it.nextIndex();
+				GameNode node = (GameNode) it.next();
+				result.add(new NodePosition(node, index * 200 + 50, depths.get(node) * 70));
+			}
+		}
+		
+		return result;
+	}
+
+	private int findDepth(GameNode node, Map<GameNode, Integer> depths) {
+		int calculatedDepth = 0;
+		for (GameNode parent : node.getParents()) {
+			Integer parentDepth = depths.get(parent);
+			if (parentDepth == null) {
+				parentDepth = findDepth(parent, depths);
+			}
+			calculatedDepth = Math.max(calculatedDepth, parentDepth);
+		}
+		calculatedDepth++;
+		depths.put(node, calculatedDepth);
+		return calculatedDepth;
 	}
 	
 }

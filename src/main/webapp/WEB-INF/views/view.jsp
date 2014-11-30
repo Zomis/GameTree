@@ -20,14 +20,12 @@
 }
 
 /** ELEMENT POSITIONS **/
-#chartWindow8 { left:20em; top:6em;}
-#chartWindow9 { left:10em;top:18em;}
-#chartWindow10 { left:40em;top:18em;}
-#chartWindow11 { left:4em;top:30em;}
-#chartWindow12 { left:22em;top:30em;}
-#chartWindow13 { left:47em;top:30em;}
-#chartWindow14 { top:18em;left:46em;}
-#chartWindow15 { left:63em;top:38em;}
+<c:forEach items="${nodePositions}" var="node">
+	#chartWindow${node.id} {
+		left: ${node.x}px;
+		top: ${node.y}px;
+	}
+</c:forEach>
 	</style>
 </head>
 <body role="document">
