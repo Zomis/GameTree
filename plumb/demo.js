@@ -45,6 +45,13 @@ jsPlumb.ready(function() {
 		instance.connect({uuids:["chartWindow1s", "chartWindow3e" ]});
 		instance.connect({uuids:["chartWindow2s", "chartWindow4e" ]});
 		instance.connect({uuids:["chartWindow2s", "chartWindow5e" ]});
+		instance.bind("connection", function(info) {
+			info.connection.bind("click", function(conn) {
+				instance.detach(conn);
+			});
+			alert("Connection added: " + info.sourceId + " --> " + info.targetId);
+				
+		});
 				
 		instance.draggable(windows);		
 	});
