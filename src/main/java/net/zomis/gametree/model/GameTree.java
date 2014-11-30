@@ -25,7 +25,7 @@ public class GameTree {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer	gameid;
+	private Integer	id;
 	
 	@ManyToOne
 	private TreeUser author;
@@ -42,8 +42,8 @@ public class GameTree {
 		return name;
 	}
 	
-	public Integer getGameid() {
-		return gameid;
+	public Integer getId() {
+		return id;
 	}
 	
 	public void setName(String name) {
