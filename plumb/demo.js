@@ -20,8 +20,7 @@ jsPlumb.ready(function() {
 		var arrowCommon = { foldback:0.7, fillStyle:color, width:14 },
 			// use three-arg spec to create two different arrows with the common values:
 			overlays = [
-				[ "Arrow", { location:0.7 }, arrowCommon ],
-				[ "Arrow", { location:0.3, direction:-1 }, arrowCommon ]
+				[ "Arrow", { location:0.7 }, arrowCommon ]
 			];
 
 		// add endpoints, giving them a UUID.
