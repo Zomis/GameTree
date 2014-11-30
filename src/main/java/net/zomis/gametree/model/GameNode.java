@@ -46,7 +46,7 @@ public class GameNode {
 
 	@Override
 	public String toString() {
-		return "GameNode [id=" + id + ", tree=" + tree + ", name=" + name + "]";
+		return id + ": " + name;
 	}
 
 	public void setTree(GameTree tree) {
