@@ -20,22 +20,22 @@
 }
 
 /** ELEMENT POSITIONS **/
-#chartWindow1 { left:20em; top:6em;}
-#chartWindow2 { left:10em;top:18em;}
-#chartWindow3 { left:40em;top:18em;}
-#chartWindow4 { left:4em;top:30em;}
-#chartWindow5 { left:22em;top:30em;}
-#chartWindow6 { left:47em;top:30em;}
-#chartWindow7 { top:18em;left:46em;}
-#chartWindow8 { left:63em;top:38em;}
+#chartWindow8 { left:20em; top:6em;}
+#chartWindow9 { left:10em;top:18em;}
+#chartWindow10 { left:40em;top:18em;}
+#chartWindow11 { left:4em;top:30em;}
+#chartWindow12 { left:22em;top:30em;}
+#chartWindow13 { left:47em;top:30em;}
+#chartWindow14 { top:18em;left:46em;}
+#chartWindow15 { left:63em;top:38em;}
 	</style>
 </head>
 <body role="document">
 	<div id="main">
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
-			<c:forEach items="${nodes}" var="node" varStatus="itstatus">
-				<div class="window" id="chartWindow${itstatus.index}">${node}</div>
+			<c:forEach items="${nodes}" var="node">
+				<div class="window" id="chartWindow${node.getId()}">${node}</div>
 			</c:forEach>
         </div>
         <!-- /demo -->
@@ -79,12 +79,9 @@
 				});
 			}
 		
-			instance.connect({uuids:["chartWindow3e", "chartWindow6e" ], overlays:overlays, detachable:true, reattach:true});
-			instance.connect({uuids:["chartWindow1e", "chartWindow2e" ], overlays:overlays});
-			instance.connect({uuids:["chartWindow1e", "chartWindow3e" ], overlays:overlays});
-			instance.connect({uuids:["chartWindow2e", "chartWindow4e" ], overlays:overlays});
-			instance.connect({uuids:["chartWindow2e", "chartWindow5e" ], overlays:overlays});
-					
+			<c:forEach items="${connections}" var="connection" varStatus="itstatus">
+				instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ], overlays:overlays});
+			</c:forEach>
 			instance.draggable(windows);		
 		});
 

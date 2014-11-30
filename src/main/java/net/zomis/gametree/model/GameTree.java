@@ -59,5 +59,15 @@ public class GameTree {
 	public List<GameNode> getNodes() {
 		return nodes;
 	}
+
+	public List<NodeConnection> findConnections() {
+		List<NodeConnection> result = new ArrayList<>();
+		for (GameNode node : this.nodes) {
+			for (GameNode parent : node.getParents()) {
+				result.add(new NodeConnection(parent, node));
+			}
+		}
+		return result;
+	}
 	
 }

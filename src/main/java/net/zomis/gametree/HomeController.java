@@ -131,6 +131,7 @@ public class HomeController {
 		GameTree tree = (GameTree) session.get(GameTree.class, id);
 		tree.getNodes().size(); // fetch items
 		model.addAttribute("nodes", tree.getNodes());
+		model.addAttribute("connections", tree.findConnections());
 		model.addAttribute("tree", tree);
 		session.close();
 		return "view";

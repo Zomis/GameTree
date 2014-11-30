@@ -53,4 +53,12 @@ public class GameNode {
 		this.tree = tree;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+
+	public List<GameNode> getParents() {
+		return this.parents;
+	}
+	
 }
