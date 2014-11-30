@@ -2,6 +2,7 @@ jsPlumb.ready(function() {
 
 	var color = "gray";
 
+	var arrowCommon = { foldback:0.7, fillStyle:color, width:14 };
 	var instance = jsPlumb.getInstance({
 		// notice the 'curviness' argument to this Bezier curve.  the curves on this page are far smoother
 		// than the curves on the first demo, which use the default curviness value.			
@@ -11,7 +12,8 @@ jsPlumb.ready(function() {
 		EndpointStyle : { radius:9, fillStyle:color },
 		HoverPaintStyle : {strokeStyle:"#ec9f2e" },
 		EndpointHoverStyle : {fillStyle:"#ec9f2e" },
-		Container:"game-tree"
+		Container:"game-tree",
+		ConnectionOverlays : [ ["Arrow", { location: 0.5 }, arrowCommon ] ]
 	});
 		
 	// suspend drawing and initialise.
