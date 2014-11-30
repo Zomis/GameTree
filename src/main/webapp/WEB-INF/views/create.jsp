@@ -6,13 +6,16 @@
 <title><fmt:message key="create.title" /></title>
 </head>
 <body role="document">
-
+<%@ include file="navbar.jsp" %>
+<div class="container theme-home" role="main">
+	<h1><fmt:message key="create.header" /></h1>
 	<form:form action="create" method="post" modelAttribute="tree">
-		<form:label path="name">
+		<form:label path="name" cssClass="sr-only">
 			<fmt:message key="create.name" />
 		</form:label>
-		<form:input type="text" path="name" value="Treename" />
+		<form:input type="text" path="name" cssClass="form-control" placeholder="Name" value="Treename" />
 		<input type="submit" />
 	</form:form>
+</div>
 </body>
 </html>
