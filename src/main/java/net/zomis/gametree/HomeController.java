@@ -109,13 +109,16 @@ public class HomeController {
 			node.addTag(tag);
 		}
 		
-		model.addAttribute("node", node);
+		model.addAttribute("nodeAdded", node);
+		model.addAttribute("justAdded", true);
+		model.addAttribute("node", new GameNodeForm());
+		model.addAttribute("treeId", tree.getId());
 		session.beginTransaction();
 		tree.addNode(node);
 		session.update(tree);
 		session.getTransaction().commit();
 		session.close();
-		return "added";
+		return "add";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)

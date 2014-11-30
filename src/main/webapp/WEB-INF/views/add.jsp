@@ -6,6 +6,9 @@
 <title><fmt:message key="add.title" /></title>
 </head>
 <body role="document">
+	<c:if test="${justAdded}">
+		Node added: <c:out value="${nodeAdded}"></c:out>
+	</c:if>
 
 	<form:form action="add" method="post" modelAttribute="node">
 		<form:input type="hidden" path="tree" value="${treeId}" />
