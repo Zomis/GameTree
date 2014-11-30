@@ -70,6 +70,7 @@
 				<beans:value>net.zomis.gametree.model.GameTree</beans:value>
 				<beans:value>net.zomis.gametree.model.GameNode</beans:value>
 				<beans:value>net.zomis.gametree.model.TreeUser</beans:value>
+				<beans:value>net.zomis.gametree.model.NodeTag</beans:value>
 			</beans:list>
 		</beans:property>
 		<beans:property name="dataSource" ref="c3p0dataSource" />
