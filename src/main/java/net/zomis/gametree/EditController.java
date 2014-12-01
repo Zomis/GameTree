@@ -33,4 +33,12 @@ public class EditController {
 		return "add-" + treeId;
 	}
 
+	@RequestMapping(value = "/edit/node", method = RequestMethod.POST)
+	public @ResponseBody String editNode(@RequestParam Integer tree, @RequestParam Integer node, 
+			@RequestParam String name, @RequestParam String tags) {
+		logger.info("Edit node! " + tree + ", ");
+		
+		return String.format("ok-%s-%s-%s-%s", tree, node, name, tags);
+	}
+	
 }
