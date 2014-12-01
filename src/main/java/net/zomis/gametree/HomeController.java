@@ -139,6 +139,7 @@ public class HomeController {
 		model.addAttribute("nodePositions", tree.findPositions());
 		model.addAttribute("connections", tree.findConnections());
 		model.addAttribute("tree", tree);
+		model.addAttribute("treeId", tree.getId());
 		model.addAttribute("editmode", edit);
 		session.close();
 		return "view";
