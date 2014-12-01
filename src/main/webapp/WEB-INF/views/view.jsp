@@ -43,12 +43,13 @@
 
 	<div id="main">
 	
-		<c:if test="${editmode}">
 			<div class="tree-controls">
-				<input type="button" value="Add Node" onclick="addNode()">
+				<c:if test="${editmode}">
+					<input type="button" value="Add Node" onclick="addNode()">
 					<input type="button" value="Save positions" onclick="savePositions()">
+					<input type="button" value="Remove" onclick="removeNode(this)" />
+				</c:if>
 			</div>
-		</c:if>
 	
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
