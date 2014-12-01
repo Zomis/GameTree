@@ -130,6 +130,24 @@ public class EditController {
 		});
 	}
 	
+	@RequestMapping(value = "/edit/node/pos", method = RequestMethod.POST)
+	public @ResponseBody String editNodePos(@RequestParam Integer tree, @RequestParam("node") Integer nodeId,
+			@RequestParam Integer x, @RequestParam Integer y) {
+		return withSession(sess -> {
+			logger.info("Edit node! " + tree + ", " + nodeId + ", " + x + ", " + y);
+			GameNode node = (GameNode) sess.get(GameNode.class, nodeId);
+			if (failOnTree(node, tree)) {
+				return "wrong-tree";
+			}
+			node.setX(x);
+			node.setY(y);
+			sess.beginTransaction();
+			sess.update(node);
+			sess.getTransaction().commit();
+			return "ok";
+		});
+	}
+	
 	@RequestMapping(value = "/edit/node/remove", method = RequestMethod.POST)
 	public @ResponseBody String removeNode(@RequestParam Integer tree, @RequestParam Integer node) {
 		return withSession(sess -> {

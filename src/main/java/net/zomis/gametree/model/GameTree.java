@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
@@ -75,6 +76,9 @@ public class GameTree {
 	}
 	
 	public List<NodePosition> findPositions() {
+		if (true) {
+			return actualPositions();
+		}
 		List<NodePosition> result = new ArrayList<>();
 		
 		Map<GameNode, Integer> depths = new HashMap<GameNode, Integer>();
@@ -94,6 +98,14 @@ public class GameTree {
 		}
 		
 		return result;
+	}
+
+	private List<NodePosition> actualPositions() {
+		Random random = new Random();
+		return this.nodes.stream()
+				.filter(node -> node != null)
+				.peek(node -> node.fixNonNull(random))
+				.map(node -> new NodePosition(node, node.getX(), node.getY())).collect(Collectors.toList());
 	}
 
 	private int findDepth(GameNode node, Map<GameNode, Integer> depths) {

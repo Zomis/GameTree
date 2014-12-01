@@ -46,6 +46,7 @@
 		<c:if test="${editmode}">
 			<div class="tree-controls">
 				<input type="button" value="Add Node" onclick="addNode()">
+					<input type="button" value="Save positions" onclick="savePositions()">
 			</div>
 		</c:if>
 	
@@ -119,6 +120,34 @@
 	}
 	
 	<c:if test="${editmode}">
+	function savePositions() {
+		var nodes = $(".window");
+		savePosition(nodes, 0);
+	}
+	
+	function savePosition(nodes, index) {
+		if (nodes.length <= index) {
+			alert(nodes.length + " positions saved!");
+			return;
+		}
+		var node = $(nodes[index]);
+		var pos = node.position();
+		$.ajax({
+			type: "POST",
+			url: "<c:url value="/edit/node/pos" />",
+			data: { tree: ${treeId}, node: node.data('node'), x: pos.left, y: pos.top }
+		})
+		.done(function( msg ) {
+			if (msg == "ok") {
+				savePosition(nodes, index + 1);
+			}
+			else alert("Error occured when saving position of node " + index + ": " + node.id + " - " + msg);
+		})
+		.fail(function(jqXHR, textStatus) {
+			alert("Unable to save position of node " + index + ": " + node.id + " - " + textStatus);
+		});
+	}
+	
 	function addNode(obj) {
 		$.ajax({
 			type: "POST",

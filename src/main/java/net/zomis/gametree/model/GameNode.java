@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,10 @@ public class GameNode {
 	private List<NodeTag> tags = new ArrayList<>();
 	
 	private String name;
+	
+	private Integer x = 100;
+	
+	private Integer y = 100;
 	
 	public String getName() {
 		return name;
@@ -134,6 +139,31 @@ public class GameNode {
 		
 		this.parents.clear();
 		this.tags.clear();
+	}
+	
+	public Integer getX() {
+		return x;
+	}
+	
+	public Integer getY() {
+		return y;
+	}
+	
+	public void setX(Integer x) {
+		this.x = x;
+	}
+	
+	public void setY(Integer y) {
+		this.y = y;
+	}
+
+	public void fixNonNull(Random random) {
+		if (this.x == null) {
+			x = random.nextInt(500);
+		}
+		if (this.y == null) {
+			y = random.nextInt(500);
+		}
 	}
 	
 }
