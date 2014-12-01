@@ -7,10 +7,11 @@
 	<style>
 	
 	/** ELEMENTS **/
-.chart-demo .window { 
+.window { 
 	border:0.1em dotted #d4e06b; 	
-	width:14em; height:4em; 	
-	line-height:4em;	
+	width: 180px;
+	height: 50px; 	
+	line-height: 1em;
 }
 
 /** HOVER EFFECTS **/
