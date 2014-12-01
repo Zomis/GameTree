@@ -42,6 +42,13 @@
 
 
 	<div id="main">
+	
+		<c:if test="${editmode}">
+			<div class="tree-controls">
+				<input type="button" value="Add Node" onclick="addNode()">
+			</div>
+		</c:if>
+	
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
 			<c:forEach items="${nodes}" var="node">
@@ -73,7 +80,6 @@
 				</div>
 			</c:forEach>
         </div>
-        <!-- /demo -->
 	</div>
 	
 	<div id="node-details" style="display: none;">
@@ -88,7 +94,46 @@
 
 
 	<script>
+	function addEndpoints(instance, obj) {
 	<c:if test="${editmode}">
+		instance.addEndpoint(obj, {
+			isSource: true,
+			uuid: obj.getAttribute("id") + "s",
+			anchor: "Bottom",
+			maxConnections: -1
+		});
+		instance.addEndpoint(obj, {
+			isTarget: true,
+			uuid: obj.getAttribute("id") + "e",
+			anchor: "Top",
+			maxConnections: -1
+		});
+	</c:if>
+	<c:if test="${not editmode}">
+		instance.addEndpoint(obj, {
+			uuid: obj.getAttribute("id") + "e",
+			anchor: "Center",
+			maxConnections: -1
+		});
+	</c:if>
+	}
+	
+	<c:if test="${editmode}">
+	function addNode(obj) {
+		$.ajax({
+			type: "POST",
+			url: "<c:url value="/edit/node/add" />",
+			data: { tree: ${treeId}, name: "New Node", tags: "" }
+		})
+		.done(function( msg ) {
+			var id = msg;
+			alert("Node with id " + id + " has been added. Refresh to be see and modify it. (Sorry)");
+		})
+		.fail(function(jqXHR, textStatus) {
+			alert("Error saving: " + jqXHR + ", " + textStatus);
+		});
+	}
+	
 	function saveNode(obj) {
 		var node = $(obj).parents(".window");
 		var nodeId = node.data('node');
@@ -229,29 +274,9 @@
 			// add endpoints, giving them a UUID.
 			// you DO NOT NEED to use this method. You can use your library's selector method.
 			// the jsPlumb demos use it so that the code can be shared between all three libraries.
-			var windows = jsPlumb.getSelector(".chart-demo .window");
+			var windows = jsPlumb.getSelector(".window");
 			for (var i = 0; i < windows.length; i++) {
-				<c:if test="${editmode}">
-				instance.addEndpoint(windows[i], {
-					isSource: true,
-					uuid:windows[i].getAttribute("id") + "s",
-					anchor:"Bottom",
-					maxConnections:-1
-				});
-				instance.addEndpoint(windows[i], {
-					isTarget: true,
-					uuid:windows[i].getAttribute("id") + "e",
-					anchor:"Top",
-					maxConnections:-1
-				});
-				</c:if>
-				<c:if test="${not editmode}">
-				instance.addEndpoint(windows[i], {
-					uuid:windows[i].getAttribute("id") + "e",
-					anchor:"Center",
-					maxConnections:-1
-				});
-				</c:if>
+				addEndpoints(instance, windows[i]);
 			}
 		
 			<c:forEach items="${connections}" var="connection" varStatus="itstatus">
