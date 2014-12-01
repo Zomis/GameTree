@@ -65,6 +65,7 @@
 								<div class="edit-submit">
 									<input type="button" value="Save" onclick="saveNode(this)" />
 									<input type="button" value="Cancel" onclick="cancelEditNode()" />
+									<input type="button" value="Remove" onclick="removeNode(this)" />
 								</div>
 							</form>
 						</div>
@@ -80,6 +81,10 @@
 		<div id="node-tags"></div>
 	</div>
 	
+	<div id="dialog-confirm" style="display: none;">
+		<p>Are you sure you want to delete the node <span id="confirm-node-name"></span>?</p>
+	</div>
+	
 
 
 	<script>
@@ -89,17 +94,51 @@
 		var nodeId = node.data('node');
 		var nodeName = node.find('.form-name').val();
 		var nodeTags = node.find('.form-tags').val();
-		alert("save " + nodeId + " - " + nodeName + " - " + nodeTags);
 		$.ajax({
 			type: "POST",
 			url: "<c:url value="/edit/node" />",
 			data: { tree: ${treeId}, node: nodeId, name: nodeName, tags: nodeTags  }
 		})
 		.done(function( msg ) {
-			alert( "Node saved: " + msg );
+			cancelEditNode();
 		})
 		.fail(function(jqXHR, textStatus) {
 			alert("Error saving: " + jqXHR + ", " + textStatus);
+		});
+	}
+	
+	function removeNode(obj) {
+		var node = $(obj).parents(".window");
+		var nodeId = node.data('node');
+		var name = node.find(".node-name").html();
+		$("#confirm-node-name").html(name);
+		$( "#dialog-confirm" ).dialog({
+			resizable: false,
+			height: 140,
+			modal: true,
+			buttons: {
+				"Remove": function() {
+					$.ajax({
+						type: "POST",
+						url: "<c:url value="/edit/node/remove" />",
+						data: { tree: ${treeId}, node: nodeId }
+					})
+					.done(function( msg ) {
+						cancelEditNode();
+						plumb.deleteEndpoint("chartWindow" + nodeId + "s");
+						plumb.deleteEndpoint("chartWindow" + nodeId + "e");
+						jsPlumb.detachAllConnections(node);
+						node.remove();
+					})
+					.fail(function(jqXHR, textStatus) {
+						alert("Error removing node: " + jqXHR + ", " + textStatus);
+					});
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
 		});
 	}
 	
@@ -138,7 +177,6 @@
 			data: { tree: ${treeId}, from: sourceId, to: targetId }
 		})
 		.done(function( msg ) {
-			alert( "Removed connection: " + msg );
 		})
 		.fail(function(jqXHR, textStatus) {
 			alert("Error removing connection: " + jqXHR + ", " + textStatus);
@@ -158,7 +196,6 @@
 			data: { tree: ${treeId}, from: sourceId, to: targetId }
 		})
 		.done(function( msg ) {
-			alert( "Added connection: " + msg );
 		})
 		.fail(function(jqXHR, textStatus) {
 			alert("Error adding connection: " + jqXHR + ", " + textStatus);
@@ -167,7 +204,7 @@
 	
 	</c:if>
 	
-	
+	var plumb;
 	jsPlumb.ready(function() {			
 
 		var color = "gray";
@@ -185,6 +222,7 @@
 			Container:"game-tree",
 	        ConnectionOverlays : [ ["Arrow", { location: 0.5 }, arrowCommon ] ]
 		});
+		plumb = instance;
 			
 		// suspend drawing and initialise.
 		instance.doWhileSuspended(function() {		

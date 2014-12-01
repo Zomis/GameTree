@@ -42,7 +42,7 @@ public class GameTree {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	private Date time;
 	
-	@OneToMany(targetEntity = GameNode.class, cascade = { CascadeType.ALL }, mappedBy = "tree")
+	@OneToMany(targetEntity = GameNode.class, cascade = { }, mappedBy = "tree")
 	private List<GameNode> nodes = new ArrayList<GameNode>();
 	
 	public String getName() {
@@ -109,6 +109,10 @@ public class GameTree {
 		calculatedDepth++;
 		depths.put(node, calculatedDepth);
 		return calculatedDepth;
+	}
+
+	public void removeNode(GameNode gameNode) {
+		this.nodes.remove(gameNode);
 	}
 	
 }

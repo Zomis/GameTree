@@ -129,6 +129,11 @@ public class GameNode {
 		return true;
 	}
 	
-	
+	public void remove() {
+		this.tree.getNodes().forEach(node -> node.removeParent(this));
+		
+		this.parents.clear();
+		this.tags.clear();
+	}
 	
 }

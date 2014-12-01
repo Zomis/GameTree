@@ -1,5 +1,6 @@
 package net.zomis.gametree;
 
+import java.sql.SQLException;
 import java.util.function.Function;
 
 import net.zomis.gametree.model.GameNode;
@@ -96,7 +97,7 @@ public class EditController {
 			return object.apply(sess);
 		}
 		catch (Exception ex) {
-			logger.error("error performing " + object, ex);
+			logException(ex);
 			return "error: " + ex;
 		}
 		finally {
@@ -104,6 +105,46 @@ public class EditController {
 		}
 	}
 
+	private void logException(Exception ex) {
+		logger.error("Error occured in EditController", ex);
+		if (ex instanceof SQLException) {
+			SQLException sqlException = (SQLException) ex;
+			logException(sqlException.getNextException());
+		}
+	}
+
+	@RequestMapping(value = "/edit/node/add", method = RequestMethod.POST)
+	public @ResponseBody String addNode(@RequestParam Integer tree, @RequestParam String name, @RequestParam String tags) {
+		return withSession(sess -> {
+			logger.info("Add node! " + tree + " with name " + name + " and tags " + tags);
+			GameNode node = new GameNode();
+			GameTree gameTree = (GameTree) sess.get(GameTree.class, tree);
+			node.setTree(gameTree);
+			
+			node.setName(name);
+			node.updateTags(tags, sess);
+			sess.beginTransaction();
+			sess.persist(node);
+			sess.getTransaction().commit();
+			return String.valueOf(node.getId());
+		});
+	}
+	
+	@RequestMapping(value = "/edit/node/remove", method = RequestMethod.POST)
+	public @ResponseBody String removeNode(@RequestParam Integer tree, @RequestParam Integer node) {
+		return withSession(sess -> {
+			logger.info("Remove node! " + tree + ", " + node);
+			GameNode gameNode = (GameNode) sess.get(GameNode.class, node);
+			if (failOnTree(gameNode, tree)) {
+				return "wrong-tree";
+			}
+			sess.beginTransaction();
+			gameNode.remove();
+			gameNode.getTree().removeNode(gameNode);
+			sess.delete(gameNode);
+			sess.getTransaction().commit();
+			return String.valueOf(node);
+		});
 	}
 	
 }
