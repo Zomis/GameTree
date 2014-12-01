@@ -130,16 +130,18 @@
 	}
 	
 	function detatchConnection(plumb, conn) {
+		var sourceId = $("#" + conn.sourceId).data('node');
+		var targetId = $("#" + conn.targetId).data('node');
 		$.ajax({
 			type: "POST",
 			url: "<c:url value="/edit/connection/remove" />",
-			data: { tree: ${treeId}, from: conn.sourceId, to: conn.targetId }
+			data: { tree: ${treeId}, from: sourceId, to: targetId }
 		})
 		.done(function( msg ) {
 			alert( "Removed connection: " + msg );
 		})
 		.fail(function(jqXHR, textStatus) {
-			alert("Error saving: " + jqXHR + ", " + textStatus);
+			alert("Error removing connection: " + jqXHR + ", " + textStatus);
 		});
 		plumb.detach(conn);
 	}
@@ -148,16 +150,18 @@
         conn.bind("click", function(conn) {
         	detatchConnection(instance, conn);
         });
+		var sourceId = $("#" + conn.sourceId).data('node');
+		var targetId = $("#" + conn.targetId).data('node');
 		$.ajax({
 			type: "POST",
 			url: "<c:url value="/edit/connection/add" />",
-			data: { tree: ${treeId}, from: conn.sourceId, to: conn.targetId }
+			data: { tree: ${treeId}, from: sourceId, to: targetId }
 		})
 		.done(function( msg ) {
-			alert( "Removed connection: " + msg );
+			alert( "Added connection: " + msg );
 		})
 		.fail(function(jqXHR, textStatus) {
-			alert("Error saving: " + jqXHR + ", " + textStatus);
+			alert("Error adding connection: " + jqXHR + ", " + textStatus);
 		});
 	}
 	
