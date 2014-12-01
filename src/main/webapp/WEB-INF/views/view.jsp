@@ -86,7 +86,15 @@
 			}
 		
 			<c:forEach items="${connections}" var="connection" varStatus="itstatus">
+				<c:if test="${editmode}">
+					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]})
+						.bind("click", function(conn) {
+							instance.detach(conn);
+						});
+				</c:if>
+				<c:if test="${not editmode}">
 					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]});
+				</c:if>
 			</c:forEach>
 			instance.draggable(windows);		
 		});

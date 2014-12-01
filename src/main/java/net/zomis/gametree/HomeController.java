@@ -128,7 +128,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-	public String view(Locale locale, @PathVariable Integer id, Model model, HttpServletRequest request) {
+	public String view(Locale locale, @RequestParam Boolean edit, @PathVariable Integer id, Model model, HttpServletRequest request) {
 		logger.info("View!", locale);
 		Session session = sessionFactory.openSession();
 		GameTree tree = (GameTree) session.get(GameTree.class, id);
@@ -139,6 +139,7 @@ public class HomeController {
 		model.addAttribute("nodePositions", tree.findPositions());
 		model.addAttribute("connections", tree.findConnections());
 		model.addAttribute("tree", tree);
+		model.addAttribute("editmode", edit);
 		session.close();
 		return "view";
 	}
