@@ -52,7 +52,40 @@
 	</div>
 	
 
+
 	<script>
+	<c:if test="${editmode}">
+	function detatchConnection(plumb, conn) {
+		$.ajax({
+			type: "POST",
+			url: "<c:url value="/edit/connection/remove" />",
+			data: { tree: ${treeId}, from: conn.sourceId, to: conn.targetId }
+		})
+		.done(function( msg ) {
+			alert( "Removed connection: " + msg );
+		})
+		.fail(function(jqXHR, textStatus) {
+			alert("Error saving: " + jqXHR + ", " + textStatus);
+		});
+	}
+	
+	function newConnection(conn) {
+		$.ajax({
+			type: "POST",
+			url: "<c:url value="/edit/connection/add" />",
+			data: { tree: ${treeId}, from: conn.sourceId, to: conn.targetId }
+		})
+		.done(function( msg ) {
+			alert( "Removed connection: " + msg );
+		})
+		.fail(function(jqXHR, textStatus) {
+			alert("Error saving: " + jqXHR + ", " + textStatus);
+		});
+	}
+	
+	</c:if>
+	
+	
 	jsPlumb.ready(function() {			
 
 		var color = "gray";
@@ -89,7 +122,7 @@
 				<c:if test="${editmode}">
 					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]})
 						.bind("click", function(conn) {
-							instance.detach(conn);
+							detatchConnection(instance, conn);
 						});
 				</c:if>
 				<c:if test="${not editmode}">
