@@ -27,6 +27,10 @@
 		top: ${node.y}px;
 	}
 </c:forEach>
+
+.node-edit, .node-details {
+	display: none;
+}
 	</style>
 </head>
 <body role="document">
@@ -41,7 +45,27 @@
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
 			<c:forEach items="${nodes}" var="node">
-				<div class="window" data-tags="${node.tagNames()}" id="chartWindow${node.getId()}">${node}</div>
+				<div class="window" data-tags="${node.tagNames()}" data-node="${node.id}" id="chartWindow${node.getId()}">
+					<div class="node-info">
+						<span class="node-name">${node}</span>
+					</div>
+					<div class="node-details">
+						<c:if test="${editmode}">
+							<span class="details-edit"><a href="#" onclick="nodeEdit('${node.id}')">Edit</a></span>
+						</c:if>
+						<c:if test="${not editmode}">
+							<div class="node-tags">(tags)</div>
+						</c:if>
+					</div>
+					<c:if test="${editmode}">
+						<div class="node-edit">
+							<form method="post" action="<c:url value="/edit/node" />">
+								<input name="name" type="text" placeholder="Name" value="${node.name}" />
+								<input name="tags" type="text" placeholder="Tags" value="${node.tagNames()}" />
+							</form>
+						</div>
+					</c:if>
+				</div>
 			</c:forEach>
         </div>
         <!-- /demo -->
@@ -56,6 +80,22 @@
 
 	<script>
 	<c:if test="${editmode}">
+	function nodeEdit(id) {
+		$(".node-edit").hide();
+		$(".node-info").show();
+		var editNode = $(".window[data-node=" + id + "]");
+		$(".window").not(editNode).animate({
+			width: "180px",
+			height: "50px"
+		}, 500);
+		editNode.find(".node-edit").show();
+		editNode.find(".node-info").hide();
+		$(editNode).animate({
+			width: "250px",
+			height: "100px"
+		}, 500);
+	}
+	
 	function detatchConnection(plumb, conn) {
 		$.ajax({
 			type: "POST",
@@ -116,16 +156,32 @@
 			// the jsPlumb demos use it so that the code can be shared between all three libraries.
 			var windows = jsPlumb.getSelector(".chart-demo .window");
 			for (var i = 0; i < windows.length; i++) {
+				<c:if test="${editmode}">
+				instance.addEndpoint(windows[i], {
+					isSource: true,
+					uuid:windows[i].getAttribute("id") + "s",
+					anchor:"Bottom",
+					maxConnections:-1
+				});
+				instance.addEndpoint(windows[i], {
+					isTarget: true,
+					uuid:windows[i].getAttribute("id") + "e",
+					anchor:"Top",
+					maxConnections:-1
+				});
+				</c:if>
+				<c:if test="${not editmode}">
 				instance.addEndpoint(windows[i], {
 					uuid:windows[i].getAttribute("id") + "e",
 					anchor:"Center",
 					maxConnections:-1
 				});
+				</c:if>
 			}
 		
 			<c:forEach items="${connections}" var="connection" varStatus="itstatus">
 				<c:if test="${editmode}">
-					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]}).bind("click", function(conn) {
+					instance.connect({uuids:["chartWindow${connection.getFrom()}s", "chartWindow${connection.getTo()}e" ]}).bind("click", function(conn) {
 						detatchConnection(instance, conn);
 					});
 				</c:if>
@@ -143,7 +199,10 @@
 		jsPlumb.fire("jsPlumbDemoLoaded", instance);
 	});
 	$(".window" ).click(function() {
-		$("#node-details").dialog({
+		$(".node-details").hide();
+		$(this).find(".node-details").show();
+
+/*		$("#node-details").dialog({
 			title: $(this).html(),
 			buttons: {
 				Ok: function() {
@@ -151,13 +210,13 @@
 				}
 			}
 		});
-		$("#node-description").html($(this).html());
+		$("#node-description").html($(this).html());*/
 		var tags = $(this).data('tags').split(" ");
 		var tagHtml = "";
 		for (var i = 0; i < tags.length; i++) {
 			tagHtml += "<span class=\"node-tag\">" + tags[i] + "</span>";
 		}
-		$("#node-tags").html(tagHtml);
+		$(this).find(".node-tags").html(tagHtml);
 	});
 	</script>
 </body>
