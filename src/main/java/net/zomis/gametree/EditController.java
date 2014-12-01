@@ -1,7 +1,12 @@
 package net.zomis.gametree;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.function.Function;
 
+import net.zomis.gametree.model.GameNode;
+import net.zomis.gametree.model.GameTree;
+
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +39,41 @@ public class EditController {
 	}
 
 	@RequestMapping(value = "/edit/node", method = RequestMethod.POST)
-	public @ResponseBody String editNode(@RequestParam Integer tree, @RequestParam Integer node, 
+	public @ResponseBody String editNode(@RequestParam Integer tree, @RequestParam("node") Integer nodeId, 
 			@RequestParam String name, @RequestParam String tags) {
-		logger.info("Edit node! " + tree + ", ");
-		
-		return String.format("ok-%s-%s-%s-%s", tree, node, name, tags);
+		return withSession(sess -> {
+			logger.info("Edit node! " + tree + ", " + nodeId + ", " + name + ", " + tags);
+			GameNode node = (GameNode) sess.get(GameNode.class, nodeId);
+			if (failOnTree(node, tree)) {
+				return "wrong-tree";
+			}
+			node.setName(name);
+			sess.beginTransaction();
+			node.updateTags(tags, sess);
+			sess.update(node);
+			sess.getTransaction().commit();
+			return "ok";
+		});
+	}
+	
+	private boolean failOnTree(GameNode node, Integer tree) {
+		return !node.getTree().getId().equals(tree);
+	}
+
+	private String withSession(Function<Session, String> object) {
+		Session sess = sessionFactory.openSession();
+		try {
+			return object.apply(sess);
+		}
+		catch (Exception ex) {
+			logger.error("error performing " + object, ex);
+			return "error: " + ex;
+		}
+		finally {
+			sess.close();
+		}
+	}
+
 	}
 	
 }
