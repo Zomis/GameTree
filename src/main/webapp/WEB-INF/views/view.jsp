@@ -145,6 +145,9 @@
 			data: { tree: ${treeId}, node: nodeId, name: nodeName, tags: nodeTags  }
 		})
 		.done(function( msg ) {
+			node.find(".node-name").html(nodeName);
+			node.data('name', node.find('.form-name').val());
+			node.data('tags', node.find('.form-tags').val());
 			cancelEditNode();
 		})
 		.fail(function(jqXHR, textStatus) {
@@ -211,6 +214,10 @@
 			width: "250px",
 			height: "100px"
 		}, 500);
+		
+		editNode.find('.form-name').val(editNode.data('name'));
+		editNode.find('.form-tags').val(editNode.data('tags'));
+		
 	}
 	
 	function detatchConnection(plumb, conn) {
