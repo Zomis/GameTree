@@ -67,9 +67,13 @@
 		.fail(function(jqXHR, textStatus) {
 			alert("Error saving: " + jqXHR + ", " + textStatus);
 		});
+		plumb.detach(conn);
 	}
 	
-	function newConnection(conn) {
+	function attachConnection(conn) {
+        conn.bind("click", function(conn) {
+        	detatchConnection(instance, conn);
+        });
 		$.ajax({
 			type: "POST",
 			url: "<c:url value="/edit/connection/add" />",
@@ -120,16 +124,19 @@
 		
 			<c:forEach items="${connections}" var="connection" varStatus="itstatus">
 				<c:if test="${editmode}">
-					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]})
-						.bind("click", function(conn) {
-							detatchConnection(instance, conn);
-						});
+					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]}).bind("click", function(conn) {
+						detatchConnection(instance, conn);
+					});
 				</c:if>
 				<c:if test="${not editmode}">
 					instance.connect({uuids:["chartWindow${connection.getFrom()}e", "chartWindow${connection.getTo()}e" ]});
 				</c:if>
 			</c:forEach>
 			instance.draggable(windows);		
+			
+	        instance.bind("connection", function(info) {
+	        	attachConnection(info.connection);
+	        });
 		});
 
 		jsPlumb.fire("jsPlumbDemoLoaded", instance);
