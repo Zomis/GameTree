@@ -60,8 +60,12 @@
 					<c:if test="${editmode}">
 						<div class="node-edit">
 							<form method="post" action="<c:url value="/edit/node" />">
-								<input name="name" type="text" placeholder="Name" value="${node.name}" />
-								<input name="tags" type="text" placeholder="Tags" value="${node.tagNames()}" />
+								<input class="form-name" name="name" type="text" placeholder="Name" value="${node.name}" />
+								<input class="form-tags" name="tags" type="text" placeholder="Tags" value="${node.tagNames()}" />
+								<div class="edit-submit">
+									<input type="button" value="Save" onclick="saveNode(this)" />
+									<input type="button" value="Cancel" onclick="cancelEditNode()" />
+								</div>
 							</form>
 						</div>
 					</c:if>
@@ -80,6 +84,35 @@
 
 	<script>
 	<c:if test="${editmode}">
+	function saveNode(obj) {
+		var node = $(obj).parents(".window");
+		var nodeId = node.data('node');
+		var nodeName = node.find('.form-name').val();
+		var nodeTags = node.find('.form-tags').val();
+		alert("save " + nodeId + " - " + nodeName + " - " + nodeTags);
+		$.ajax({
+			type: "POST",
+			url: "<c:url value="/edit/node" />",
+			data: { tree: ${treeId}, node: nodeId, name: nodeName, tags: nodeTags  }
+		})
+		.done(function( msg ) {
+			alert( "Node saved: " + msg );
+		})
+		.fail(function(jqXHR, textStatus) {
+			alert("Error saving: " + jqXHR + ", " + textStatus);
+		});
+	}
+	
+	function cancelEditNode() {
+		$(".node-edit").hide();
+		$(".window").animate({
+			width: "180px",
+			height: "50px"
+		}, 500);
+		$(".node-info").show();
+		
+	}
+	
 	function nodeEdit(id) {
 		$(".node-edit").hide();
 		$(".node-info").show();
