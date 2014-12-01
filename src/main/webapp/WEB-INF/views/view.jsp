@@ -53,10 +53,13 @@
 		<!-- demo -->
 		<div class="demo chart-demo" id="game-tree">
 			<c:forEach items="${nodes}" var="node">
-				<div class="window" data-tags="${node.tagNames()}" data-node="${node.id}" id="chartWindow${node.getId()}">
+				<div class="window ${node.tagNames('node-tag-')}" data-tags="${node.tagNames('')}" data-node="${node.id}" id="chartWindow${node.getId()}">
 					<div class="node-info">
 						<span class="node-name">${node}</span>
 					</div>
+					<c:forEach items="${node.tags()}" var="tag">
+						<div class="tag tag-${tag.name}"></div>
+					</c:forEach>
 					<div class="node-details">
 						<c:if test="${editmode}">
 							<span class="details-edit"><a href="#" onclick="nodeEdit('${node.id}')">Edit</a></span>

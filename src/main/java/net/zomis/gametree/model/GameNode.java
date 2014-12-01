@@ -77,7 +77,15 @@ public class GameNode {
 	}
 	
 	public String tagNames() {
-		return this.tags.stream().map(e -> e.getName()).collect(Collectors.joining());
+		return tagNames("");
+	}
+	
+	public String tagNames(String prefix) {
+		return this.tags.stream().map(e -> prefix + e.getName()).collect(Collectors.joining(" "));
+	}
+	
+	public List<NodeTag> tags() {
+		return new ArrayList<NodeTag>(this.tags);
 	}
 	
 	public GameTree getTree() {
