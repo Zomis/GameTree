@@ -98,6 +98,10 @@ public class GameNode {
 		
 		this.tags.removeIf(tag -> !newTags.contains(tag.getName()));
 		for (String tagName : newTags) {
+			if (tagName.isEmpty()) {
+				continue;
+			}
+			
 			NodeTag tag = (NodeTag) sess.createQuery("select tag from NodeTag as tag where tag.name = :name and tag.tree.id = :tree")
 				.setInteger("tree", this.tree.getId())
 				.setString("name", tagName).uniqueResult();
