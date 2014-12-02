@@ -31,6 +31,28 @@
 .node-edit, .node-details {
 	display: none;
 }
+
+.window.node-tag-quest {
+	background-color: #ff8000;
+}
+
+.node-tag-heartpiece {
+	background-color: #ff8080;
+}
+
+.node-tag-item {
+	background-color: #00ffff;
+}
+
+.tag-heartpiece {
+	width: 32px;
+	height: 32px;
+	background-image: url("http://icons.iconarchive.com/icons/aha-soft/free-large-love/32/Heart-icon.png");
+}
+
+.tag {
+	float: left;
+}
 	</style>
 </head>
 <body role="document">
