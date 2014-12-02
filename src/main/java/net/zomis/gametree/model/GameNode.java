@@ -111,6 +111,7 @@ public class GameNode {
 			else {
 				tag = new NodeTag();
 				tag.setName(tagName);
+				tag.setTree(tree);
 				sess.persist(tag);
 				this.tags.add(tag);
 			}

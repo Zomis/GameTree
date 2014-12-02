@@ -25,4 +25,8 @@ public class NodeTag {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public void setTree(GameTree tree) {
+		this.tree = tree;
+	}
 }
